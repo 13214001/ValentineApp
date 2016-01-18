@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="verkstad.org.in.valentineapp.OneFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/current_user"
+        android:layout_below="@+id/editText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="red"
+        android:id="@+id/display_red"
+        android:layout_below="@+id/current_user"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="yellow"
+        android:id="@+id/display_yellow"
+        android:layout_alignTop="@+id/display_red"
+        android:layout_toRightOf="@+id/current_user"
+        android:layout_toEndOf="@+id/current_user" />
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/linear"
+        android:layout_below="@+id/send_flower"
+        android:layout_toRightOf="@+id/linear2"
+        android:layout_toEndOf="@+id/linear2">
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/autoCompleteTextView"
+            android:layout_gravity="center_horizontal"
+            android:hint="Search Your Crush "
+
+            />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send As Anonymous"
+            android:id="@+id/anonymous"
+            android:checked="false"
+            android:longClickable="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_box"
+
+            />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio"
+            android:weightSum="1"
+            android:layout_alignTop="@+id/send_flower"
+            android:layout_toRightOf="@+id/linear2"
+            android:layout_toEndOf="@+id/linear2">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="red"
+                android:id="@+id/radioButton"
+                android:onClick="select_rose" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="132dp"
+                android:text="yellow"
+                android:id="@+id/radioButton2"
+                android:onClick="select_rose"
+                android:layout_weight="0.52" />
+
+
+        </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/send"
+            android:onClick="send_rose"
+            />
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send flowers"
+        android:id="@+id/send_flower"
+        android:onClick="send_flowers"
+        android:layout_below="@+id/display_red"
+        android:layout_toRightOf="@+id/linear2"
+        android:layout_toEndOf="@+id/linear2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="received flowers"
+        android:id="@+id/received_flowers"
+        android:onClick="received_flowers"
+        android:layout_marginRight="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_alignTop="@+id/send_flower"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/send_flower"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="gone"
+        android:id="@+id/linear2">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView" />
+    </LinearLayout>
+
+
+</RelativeLayout>
