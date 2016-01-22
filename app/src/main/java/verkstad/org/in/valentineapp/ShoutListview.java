@@ -13,11 +13,21 @@ import android.widget.BaseAdapter;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.facebook.login.widget.ProfilePictureView;
 
 import java.io.IOException;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,8 +35,9 @@ import java.util.List;
  */
 public class ShoutListview extends BaseAdapter {
     private Activity activity;
-    Bitmap bitmaps;
-    Bitmap bitmapr;
+
+   Bitmap bitmaps;
+    ProfilePictureView profilePictureView;
     private List<Shout> Shoutitems;
     private LayoutInflater inflater;
 
@@ -38,45 +49,10 @@ public class ShoutListview extends BaseAdapter {
       this.activity=activity;
         this.Shoutitems=Shoutitems;
     }
-    public static String getTimeAgo(long time) {
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
 
-        long now = System.currentTimeMillis();
-        if (time > now || time <= 0) {
-            return null;
-        }
 
-        // TODO: localize
-        final long diff = now - time;
-        if (diff < MINUTE_MILLIS) {
-            return "just now";
-        } else if (diff < 2 * MINUTE_MILLIS) {
-            return "a minute ago";
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            return diff / MINUTE_MILLIS + " minutes ago";
-        } else if (diff < 90 * MINUTE_MILLIS) {
-            return "an hour ago";
-        } else if (diff < 24 * HOUR_MILLIS) {
-            return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
-            return "yesterday";
-        } else {
-            return diff / DAY_MILLIS + " days ago";
-        }
-    }
-    public static Bitmap getFacebookProfilePicture(String userID) throws IOException {
-        URL imageUrl = new URL("https://graph.facebook.com/" + userID + "/picture?type=large");
 
-        Bitmap bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
 
-        return bitmap;
-    }
-    public Bitmap getResizedBitmap(Bitmap image, int bitmapWidth, int bitmapHeight) {
-        return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
-    }
     @Override
     public int getCount() {
         return Shoutitems.size();
@@ -102,26 +78,34 @@ public class ShoutListview extends BaseAdapter {
         TextView name=(TextView)convertView.findViewById(R.id.name);
         TextView message=(TextView)convertView.findViewById(R.id.message);
         TextView time=(TextView)convertView.findViewById(R.id.time);
-        ImageView profile=(ImageView)convertView.findViewById(R.id.list_image);
-
+        //ImageView profile=(ImageView)convertView.findViewById(R.id.list_image);
+        profilePictureView = (ProfilePictureView)convertView.findViewById(R.id.image);
 
         Shout s=Shoutitems.get(position);
-        String timeAgo=getTimeAgo(s.getTime());
+        //String timeAgo=getTimeAgo(s.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd HH:mm");
+        Date resultdate = new Date(s.getTime());
         name.setText(s.getName());
         message.setText(s.getMessage());
-        try {
-            bitmaps = getFacebookProfilePicture("1683072511916372");
-            bitmapr=getResizedBitmap(bitmaps,30,30);
+      /**  try {
+             bitmaps= getFacebookProfilePicture("1683072511916372");
+
+            //bitmapr=getResizedBitmap(bitmaps,30,30);
             //profile.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
 
 
-        }
+        } **/
         // Converting timestamp into x ago format
 
-        time.setText(timeAgo);
-        profile.setImageBitmap(bitmapr);
+        time.setText(sdf.format(resultdate));
+
+        profilePictureView.setProfileId(s.getId());
+        //ThreeFragment obj=new ThreeFragment();
+        //obj.CallToFunction(bitmaps);
+
+        //profile.setImageBitmap(bitmap);
 
         return convertView;
     }

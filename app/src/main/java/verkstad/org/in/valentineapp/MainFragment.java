@@ -4,6 +4,7 @@ package verkstad.org.in.valentineapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,7 @@ public class MainFragment extends Fragment {
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-           GraphRequest request = GraphRequest.newMeRequest(
+          /** GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
                         @Override
@@ -66,7 +67,8 @@ public class MainFragment extends Fragment {
 
                                 displayMessage(email_id, name, id, gender);
 
-
+                               // Intent intent=new Intent(MainFragment.this.getActivity(),Home.class);
+                               // startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -76,9 +78,9 @@ public class MainFragment extends Fragment {
             Bundle parameters = new Bundle();
             parameters.putString("fields", "id,name,gender,email");
             request.setParameters(parameters);
-            request.executeAsync();
+            request.executeAsync(); **/
             Intent intent=new Intent(MainFragment.this.getActivity(),Home.class);
-            startActivity(intent);
+             startActivity(intent);
 
         }
 
@@ -105,7 +107,7 @@ public class MainFragment extends Fragment {
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
-        accessTokenTracker= new AccessTokenTracker() {
+      accessTokenTracker= new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
 
