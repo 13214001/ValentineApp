@@ -4,9 +4,7 @@ package verkstad.org.in.valentineapp;
  * Created by coder on 1/17/2016.
  */
 
-import android.app.DownloadManager;
 import android.content.Context;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -17,12 +15,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,14 +28,8 @@ import java.util.Map;
 public class Functions {
     Context context;
     public interface VolleyCallback{
-        void onSuccess(int[] result);
+        void onSuccess(int size);
     }
-
-    public interface VolleyCallback1{
-        void onSuccess(String[] result);
-    }
-
-
 
     // Sending rose
     static String sender,receiver,red_rose,yellow_rose,anonymous,message;
@@ -60,7 +50,7 @@ public class Functions {
                     JSONObject jsonObject=new JSONObject(s);
                     String message = jsonObject.getString("MESSAGE");
                     //String ann  = jsonObject.getString("anonymous");
-                    Toast.makeText(context,message,Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 
 
                 } catch (JSONException e) {
@@ -93,11 +83,9 @@ public class Functions {
 
     }
 
-
-
-    int r, y;
-    int arr[]=new int[2];
-    public int[] count_roses(Context context1,final String name, final VolleyCallback callback){
+    int size_json;
+    String[] sender_json,receiver_json,red_rose_json,yellow_rose_json,message_json,anonymous_json;
+    public int count_roses(Context context1, final VolleyCallback callback){
 
 
 
@@ -107,36 +95,28 @@ public class Functions {
         StringRequest stringRequest=new StringRequest(Request.Method.POST,AppConfig.Request_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-              // Toast.makeText(context, "checking",Toast.LENGTH_LONG).show();
+
                 try {
                     //Toast.makeText(context, "checking",Toast.LENGTH_LONG).show();
                     JSONArray jsonArray = new JSONArray(s);
 
-                    String id[]=new String[jsonArray.length()];String sender[]=new String[jsonArray.length()];
-                    String receiver[]=new String[jsonArray.length()]; String red_rose[]=new String[jsonArray.length()];
-                    String yellow_rose[]=new String[jsonArray.length()]; String message[]=new String[jsonArray.length()];
+                    sender_json=new String[jsonArray.length()];  anonymous_json=new String[jsonArray.length()];
+                    receiver_json=new String[jsonArray.length()];  red_rose_json=new String[jsonArray.length()];
+                    yellow_rose_json=new String[jsonArray.length()]; message_json=new String[jsonArray.length()];
 
                     for(int i=0;i<jsonArray.length();i++){
                         JSONObject n = jsonArray.getJSONObject(i);
-                        id[i]=n.getString("id");
-                        sender[i]=n.getString("sender");
-                        receiver[i]=n.getString("receiver");
-                        red_rose[i]=n.getString("red_roses");
-                        yellow_rose[i]=n.getString("yellow_roses");
-                        message[i]=n.getString("message");
+                        sender_json[i]=n.getString("sender");
+                        receiver_json[i]=n.getString("receiver");
+                        red_rose_json[i]=n.getString("red_roses");
+                        yellow_rose_json[i]=n.getString("yellow_roses");
+                        message_json[i]=n.getString("message");
+                        anonymous_json[i]=n.getString("anonymous");
                     }
                     // Toast.makeText(context,"arrays yrr",Toast.LENGTH_LONG).show();
 
-                    r=0;y=0;
-                    for(int i=0;i<id.length;i++){
-                        if(receiver[i].equals(name)){
-                            if(red_rose[i].equals("1")){r++;}
-                            if(yellow_rose[i].equals("1")){y++;}
-
-                        }
-                    }
-                    arr[0]=r;arr[1]=y;
-                    callback.onSuccess(arr);
+                    size_json=jsonArray.length();
+                    callback.onSuccess(jsonArray.length());
 
                 }
                 catch (JSONException e) {
@@ -146,7 +126,7 @@ public class Functions {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(context,"Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -158,13 +138,13 @@ public class Functions {
         };
 
         requestQueue.add(stringRequest);
-        return arr;
-
+        return size_json;
     }
 
 
     String[] users,email,id,gender;
-    public String[] get_users(Context context1, final VolleyCallback1 callback){
+    int users_json_size;
+    public int get_users(Context context1, final VolleyCallback callback){
         context=context1;
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,AppConfig.Request_URL, new Response.Listener<String>() {
@@ -183,9 +163,9 @@ public class Functions {
                         gender[i]=jsonObject.getString("gender");
 
                     }
-
+                    users_json_size=jsonArray.length();
                     // Toast.makeText(context,Arrays.toString(gender),Toast.LENGTH_LONG).show();
-                    callback.onSuccess(users);
+                    callback.onSuccess(jsonArray.length());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -205,7 +185,7 @@ public class Functions {
             }
         };
         requestQueue.add(stringRequest);
-        return users;
+        return users_json_size;
 
     }
 

@@ -25,4 +25,5 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile files('libs/volley.jar')
     compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:recyclerview-v7:+'
 }

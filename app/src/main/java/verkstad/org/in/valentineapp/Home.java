@@ -9,23 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
-import com.facebook.Profile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -36,7 +21,8 @@ public class Home extends AppCompatActivity {
     private ViewPager viewPager;
 
 
-    String red_rose,yellow_rose;
+
+
 
     String arr1[] = {"anu","abhishek","chetan","akash"};
     String arr2[] = {"hiiii","hellooo","hahaha","awwww"};
@@ -60,27 +46,10 @@ public class Home extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-       /** ListView listView= (ListView) findViewById(R.id.list);
-        ArrayAdapter adapter=new ArrayAdapter(this, android.support.design.R.layout.support_simple_spinner_dropdown_item,name);
-        listView.setAdapter(adapter); **/
+        /** ListView listView= (ListView) findViewById(R.id.list);
+         ArrayAdapter adapter=new ArrayAdapter(this, android.support.design.R.layout.support_simple_spinner_dropdown_item,name);
+         listView.setAdapter(adapter); **/
 
-    }
-    public void select_rose(View view){
-        boolean checked = ((RadioButton)view).isChecked();
-        switch(view.getId()){
-            case R.id.radioButton:
-                if(checked){
-                    red_rose="1";
-                    yellow_rose="0";
-                }
-                break;
-            case R.id.radioButton2:
-                if(checked){
-                    red_rose="0";
-                    yellow_rose="1";
-                    break;
-                }
-        }
     }
 
 
