@@ -34,7 +34,7 @@ public class OneFragment extends android.support.v4.app.Fragment {
     Functions functions;
     TextView textView,red_from_girls,red_from_boys,yellow_from_girls,yellow_from_boys;
     EditText editText2;
-    String current_user,receiver,message;
+    String receiver,message;
     String anonymous="no";
     RadioGroup radioGroup;
     RadioButton radiobutton_red,radiobutton_yellow;
@@ -47,10 +47,6 @@ public class OneFragment extends android.support.v4.app.Fragment {
     ArrayList<Integer> profile_pic;
     CheckBox anonymous_checkbox;
     String red_rose,yellow_rose;
-    int count_red_from_girls = 0;
-    int count_yellow_from_girls =0;
-    int count_red_from_boys = 0;
-    int count_yellow_from_boys = 0;
     ArrayList<String> friends_list;
     RelativeLayout relativeLayout_inner;
     TextView loading;
@@ -98,14 +94,82 @@ public class OneFragment extends android.support.v4.app.Fragment {
 
 
 
-        Profile profile = Profile.getCurrentProfile();
-        current_user = profile.getName();
-        textView.setText(current_user);
+        functions.get_current_user(OneFragment.this.getActivity());
+        textView.setText(functions.current_user_name);
+
+        functions.get_users(OneFragment.this.getActivity(), new Functions.VolleyCallback() {
+            @Override
+            public void onSuccess(int size) {
+
+                for (int i = 0; i < size; i++) {
+                    if (functions.users[i].equals(functions.current_user_name)) {
+                        red_from_girls.setText(functions.red_roses_from_girls[i]);
+                        yellow_from_girls.setText(functions.yellow_roses_from_girls[i]);
+                        red_from_boys.setText(functions.red_roses_from_boys[i]);
+                        yellow_from_boys.setText(functions.yellow_roses_from_boys[i]);
+                    }
+                }
+                relativeLayout_inner.setVisibility(View.VISIBLE);
+                loading.setVisibility(View.GONE);
+            }
+        });
+
+
+
+
+        functions.get_users(OneFragment.this.getActivity(), new Functions.VolleyCallback() {
+            @Override
+            public void onSuccess(int size) {
+                for(int i=0;i<size;i++){
+                    if(!functions.users[i].equals(functions.current_user_name)){
+                        friends_list.add(functions.users[i]);
+                    }
+                }
+                arrayAdapter = new ArrayAdapter<String>(OneFragment.this.getActivity(), R.layout.support_simple_spinner_dropdown_item, friends_list);
+                autoCompleteTextView.setAdapter(arrayAdapter);
+            }
+        });
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                receiver = arrayAdapter.getItem(position).toString();
+
+            }
+        });
+        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                receiver = null;
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        send_flowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearLayout.setVisibility(View.VISIBLE);
+                linearLayout2.setVisibility(View.GONE);
+
+            }
+        });
+
         functions.count_roses(OneFragment.this.getActivity(), new Functions.VolleyCallback() {
             @Override
-            public void onSuccess(final int size_json) {
-                for (int i = 0; i < size_json; i++) {
-                    if (functions.receiver_json[i].equals(current_user)) {
+            public void onSuccess(int size) {
+                for (int i = 0; i < size; i++) {
+                    if (functions.receiver_json[i].equals(functions.current_user_name)) {
                         if(functions.anonymous_json[i].equals("yes")) {
                             sender_name.add("anonymous");
                             sent_message.add(functions.message_json[i]);
@@ -119,85 +183,6 @@ public class OneFragment extends android.support.v4.app.Fragment {
                     }
                 }
 
-                functions.get_users(OneFragment.this.getActivity(), new Functions.VolleyCallback() {
-                    @Override
-                    public void onSuccess(int size) {
-                        for (int i = 0; i < size_json; i++) {
-                            if (functions.receiver_json[i].equals(current_user)) {
-                                if (functions.red_rose_json[i].equals("1")) {
-                                    for (int j = 0; j < size; j++) {
-                                        if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("female")) {
-                                            count_red_from_girls++;
-                                        } else if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("male")) {
-                                            count_red_from_boys++;
-                                        }
-                                    }
-                                } else if (functions.yellow_rose_json[i].equals("1")) {
-                                    for (int j = 0; j < size; j++) {
-                                        if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("female")) {
-                                            count_yellow_from_girls++;
-                                        } else if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("male")) {
-                                            count_yellow_from_boys++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        //Toast.makeText(OneFragment.this.getActivity(), "" + count_red_from_girls, Toast.LENGTH_SHORT).show();
-                        red_from_girls.setText(""+count_red_from_girls);
-                        yellow_from_girls.setText(""+count_yellow_from_girls);
-                        red_from_boys.setText(""+count_red_from_boys);
-                        yellow_from_boys.setText(""+count_yellow_from_boys);
-                    }
-                });
-                relativeLayout_inner.setVisibility(View.VISIBLE);
-                loading.setVisibility(View.GONE);
-
-            }
-        });
-        count_yellow_from_boys=0;count_yellow_from_girls=0;count_red_from_boys=0;count_red_from_girls=0;
-
-
-        functions.get_users(OneFragment.this.getActivity(), new Functions.VolleyCallback() {
-            @Override
-            public void onSuccess(int size) {
-                for(int i=0;i<size;i++){
-                    if(!functions.users[i].equals(current_user)){
-                        friends_list.add(functions.users[i]);
-                    }
-                }
-                arrayAdapter = new ArrayAdapter<String>(OneFragment.this.getActivity(), R.layout.support_simple_spinner_dropdown_item, friends_list);
-                autoCompleteTextView.setAdapter(arrayAdapter);
-            }
-        });
-
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                receiver = arrayAdapter.getItem(position).toString();
-
-            }
-        });
-        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                receiver = null;
-
-            }
-
-            @Override public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-        send_flowers.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                linearLayout.setVisibility(View.VISIBLE);
-                linearLayout2.setVisibility(View.GONE);
-
             }
         });
 
@@ -208,10 +193,6 @@ public class OneFragment extends android.support.v4.app.Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(OneFragment.this.getActivity()));
                 RecyclerViewAdapter adapter=new RecyclerViewAdapter(OneFragment.this.getActivity(),sender_name,sent_message,profile_pic);
                 recyclerView.setAdapter(adapter);
-
-
-
-
 
             }
         });
@@ -285,7 +266,7 @@ public class OneFragment extends android.support.v4.app.Fragment {
                     if (radioGroup.getCheckedRadioButtonId() == -1) {
                         Toast.makeText(OneFragment.this.getActivity(), "Please Select a rose", Toast.LENGTH_SHORT).show();
                     } else {
-                        functions.send(OneFragment.this.getActivity(), current_user, receiver,red_rose, yellow_rose, anonymous, message);
+                        functions.send(OneFragment.this.getActivity(),functions.current_user_name, receiver,red_rose, yellow_rose, anonymous, message);
                     }
 
                     radioGroup.clearCheck();
@@ -300,12 +281,50 @@ public class OneFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         return view;
     }
-
-
-
-
-
-
-
-
 }
+
+/**int count_red_from_girls = 0;
+ int count_yellow_from_girls =0;
+ int count_red_from_boys = 0;
+ int count_yellow_from_boys = 0;**/
+//  functions.count_roses(OneFragment.this.getActivity(), new Functions.VolleyCallback() {
+//     @Override
+//    public void onSuccess(final int size_json) {
+/**   for (int i = 0; i < size_json; i++) {
+ if (functions.receiver_json[i].equals(functions.current_user_name)) {
+ if(functions.anonymous_json[i].equals("yes")) {
+ sender_name.add("anonymous");
+ sent_message.add(functions.message_json[i]);
+ profile_pic.add(R.mipmap.ic_launcher);
+ }
+ else{
+ sender_name.add(functions.sender_json[i]);
+ sent_message.add(functions.message_json[i]);
+ profile_pic.add(R.mipmap.ic_launcher);
+ }
+ }
+ }**/
+/**   for (int i = 0; i < size_json; i++) {
+ if (functions.receiver_json[i].equals(functions.current_user_name)) {
+ if (functions.red_rose_json[i].equals("1")) {
+ for (int j = 0; j < size; j++) {
+ if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("female")) {
+ count_red_from_girls++;
+ } else if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("male")) {
+ count_red_from_boys++;
+ }
+ }
+ } else if (functions.yellow_rose_json[i].equals("1")) {
+ for (int j = 0; j < size; j++) {
+ if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("female")) {
+ count_yellow_from_girls++;
+ } else if (functions.sender_json[i].equals(functions.users[j]) && functions.gender[j].equals("male")) {
+ count_yellow_from_boys++;
+ }
+ }
+ }
+ }
+ }**/
+// Toast.makeText(OneFragment.this.getActivity(), "" + count_yellow_from_boys, Toast.LENGTH_SHORT).show();
+//});
+//  count_yellow_from_boys=0;count_yellow_from_girls=0;count_red_from_boys=0;count_red_from_girls=0;

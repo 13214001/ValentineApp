@@ -1,11 +1,16 @@
 package verkstad.org.in.valentineapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,11 +44,14 @@ public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
+    RelativeLayout fb_login_inner_relative;
+    TextView loading_fb_login;
 
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-
+            fb_login_inner_relative.setVisibility(View.GONE);
+            loading_fb_login.setVisibility(View.VISIBLE);
             GraphRequest request = GraphRequest.newMeRequest(
              loginResult.getAccessToken(),
              new GraphRequest.GraphJSONObjectCallback() {
@@ -59,6 +67,17 @@ public class LoginActivity extends AppCompatActivity {
               gender=object.getString("gender").toString();
                name=object.getString("name").toString();
                 displayMessage(email_id, name, id, gender);
+
+
+                SharedPreferences sharedPreferences = getSharedPreferences("current_profile", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("id",id);
+                editor.putString("email_id",email_id);
+                editor.putString("gender",gender);
+                editor.putString("name",name);
+                editor.apply();
+
+
 
             }
             catch (JSONException e) {
@@ -153,6 +172,8 @@ public class LoginActivity extends AppCompatActivity {
         profileTracker.startTracking();
 
         LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
+        fb_login_inner_relative= (RelativeLayout) findViewById(R.id.facebook_login_inner_relative);
+        loading_fb_login= (TextView) findViewById(R.id.loading_facebook_login);
         //textView = (TextView) view.findViewById(R.id.textView);
         loginButton.setReadPermissions(Arrays.asList("public_profile, email"));
 

@@ -14,9 +14,10 @@ import java.util.ArrayList;
  */
 public class RecyclerViewAdapterlb extends RecyclerView.Adapter<RecyclerViewAdapterlb.ViewHolderlb> {
     LayoutInflater inflater;
-    ArrayList<String> names_leader_board;
-    ArrayList<Integer> ranks_leader_board,counts_red_leader_board,counts_yellow_leader_board;
-    public RecyclerViewAdapterlb(Context context, ArrayList<Integer> ranks_leader_board, ArrayList<String> names_leader_board, ArrayList<Integer> counts_red_leader_board, ArrayList<Integer> counts_yellow_leader_board){
+    ArrayList<String> names_leader_board,counts_red_leader_board,counts_yellow_leader_board;
+    ArrayList<Integer> ranks_leader_board;
+    public RecyclerViewAdapterlb(Context context,ArrayList<Integer> ranks_leader_board,ArrayList<String> names_leader_board,
+                                 ArrayList<String> counts_red_leader_board,ArrayList<String> counts_yellow_leader_board){
         inflater=LayoutInflater.from(context);
         this.ranks_leader_board=ranks_leader_board;
         this.counts_red_leader_board=counts_red_leader_board;
@@ -36,12 +37,12 @@ public class RecyclerViewAdapterlb extends RecyclerView.Adapter<RecyclerViewAdap
     public void onBindViewHolder(ViewHolderlb holder, int position) {
         String name_leader_board=names_leader_board.get(position);
         int rank_leader_board=ranks_leader_board.get(position);
-        int count_red_leader_board=counts_red_leader_board.get(position);
-        int count_yellow_leader_board = counts_yellow_leader_board.get(position);
+        String count_red_leader_board=counts_red_leader_board.get(position);
+        String count_yellow_leader_board = counts_yellow_leader_board.get(position);
         holder.rank_leader_board.setText(""+rank_leader_board);
         holder.name_leader_board.setText(name_leader_board);
-        holder.count_red_leader_board.setText(""+count_red_leader_board);
-        holder.count_yellow_leader_board.setText(""+count_yellow_leader_board);
+        holder.count_red_leader_board.setText(count_red_leader_board);
+        holder.count_yellow_leader_board.setText(count_yellow_leader_board);
     }
 
     @Override

@@ -25,13 +25,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Shout"
-        android:background="#E57373"
+        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        android:background="#ff9b9b"
         android:layout_below="@+id/EditText"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:clickable="true" />
     <ListView
         android:id="@+id/list"
         android:layout_below="@+id/shout"
@@ -42,6 +44,7 @@
         android:layout_marginRight="10dp"
         android:divider="#b5b5b5"
         android:dividerHeight="1dp"
+
         android:listSelector="@drawable/list_selector" />
 
 </RelativeLayout>

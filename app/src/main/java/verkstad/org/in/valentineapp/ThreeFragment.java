@@ -1,7 +1,9 @@
 package verkstad.org.in.valentineapp;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +46,13 @@ import java.util.logging.LogRecord;
 public class ThreeFragment extends android.support.v4.app.Fragment  {
     //String login_url="http://192.168.16.1/Valentine/index.php";
     String[] name={"anu","abhi","chetan"};
-    ListView listView;
-    ShoutListview adapter;
-    Long lastMsgTime;
-    Handler handler;
+    Context context;
+    private ShoutListview adapter;
+   private Long lastMsgTime;
+    private static Handler handler;
     private boolean isRunning;
     private List<Shout> Shoutitems;
+
     public ThreeFragment() {
         // Required empty public constructor
     }
@@ -56,6 +61,8 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Shoutitems = new ArrayList<Shout>();
+
 
     }
 
@@ -66,9 +73,8 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         final View view=inflater.inflate(R.layout.fragment_three, container, false);
         Button shout=(Button)view.findViewById(R.id.shout);
         //ListView listView=(ListView)view.findViewById(R.id.list);
-        listView= (ListView)view. findViewById(R.id.list);
-        handler=new Handler();
-        Shoutitems = new ArrayList<Shout>();
+       ListView listView= (ListView)view. findViewById(R.id.list);
+
        /** ArrayAdapter adapter=new ArrayAdapter(ThreeFragment.this.getActivity(), android.support.design.R.layout.support_simple_spinner_dropdown_item,name);
         listView.setAdapter(adapter); **/
        /** for(int i=0;i<3;i++) {
@@ -81,33 +87,48 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         } **/
 
 
-        ShoutList();
+        //ShoutList();
         adapter=new ShoutListview(ThreeFragment.this.getActivity(),Shoutitems);
         listView.setAdapter(adapter);
+        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+       // listView.setStackFromBottom(false);
+        handler=new Handler();
         shout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestQueue request = Volley.newRequestQueue(ThreeFragment.this.getActivity());
-
                 Profile profile = Profile.getCurrentProfile();
                 final String name = profile.getName();
                 final String id=profile.getId();
                 final EditText editText = (EditText) view.findViewById(R.id.EditText);
                 final String message = editText.getText().toString();
+                if(editText.length()==0)
+                    return;
+                Shout shouts = new Shout();
+                final Date obj=new Date();
+                shouts.setId(id);
+                shouts.setMessage(message);
+                shouts.setName(name);
+                // shouts.setTime(jsonObject.getLong("time"));
+                shouts.setTime(obj.getTime());
+                final Long time=shouts.getTime();
+
+                Shoutitems.add(0,shouts);
+                adapter.notifyDataSetChanged();
+                editText.setText(null);
+                RequestQueue request = Volley.newRequestQueue(ThreeFragment.this.getActivity());
+
+
                 StringRequest stringrequest = new StringRequest(Request.Method.POST,AppConfig.Request_URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        Shout shouts = new Shout();
-                        shouts.setId(id);
-                        shouts.setMessage(message);
-                        shouts.setName(name);
-                       // shouts.setTime();
-                        Shoutitems.add(shouts);
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        Toast toast= Toast.makeText(ThreeFragment.this.getActivity(), "Check Internet Connection ", Toast.LENGTH_LONG);
+                        toast.getView().setBackgroundColor(Color.RED);
+                        toast.show();
                     }
                 }) {
                     @Override
@@ -116,6 +137,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                         params.put("name", name);
                         params.put("message", message);
                         params.put("id",id);
+                        params.put("time",time.toString());
                         return params;
                     }
                 };
@@ -137,6 +159,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
     public void onPause() {
         super.onPause();
         isRunning = false;
+
     }
 
     public void ShoutList(){
@@ -146,16 +169,18 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
             @Override
             public void onResponse(String s) {
                 try {
+
                     JSONArray jsonArray=new JSONArray(s);
                     if(jsonArray!=null && jsonArray.length()>0) {
-                        for (int i = jsonArray.length()-1; i>=0; i--) {
+                        for (int i =0; i<jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Shout shouts = new Shout();
                             shouts.setId(jsonObject.getString("id"));
                             shouts.setMessage(jsonObject.getString("message"));
                             shouts.setName(jsonObject.getString("name"));
                             shouts.setTime(jsonObject.getLong("time"));
-                            Shoutitems.add(shouts);
+                            Shoutitems.add(0,shouts);
+
                             if (lastMsgTime == null
                                     || lastMsgTime.compareTo(shouts.getTime())<0)
                                 lastMsgTime = shouts.getTime();
@@ -179,7 +204,9 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                Toast toast= Toast.makeText(ThreeFragment.this.getActivity(), "Check Internet Connection ", Toast.LENGTH_LONG);
+                toast.getView().setBackgroundColor(Color.RED);
+                toast.show();
             }
         }){
             @Override
@@ -190,6 +217,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                 else{
                     params.put("TAG","ShoutListSorted");
                     params.put("lastMsgTime",lastMsgTime.toString());
+                   params.put("id",Profile.getCurrentProfile().getId());
                    //params.put("lastMsgTime","1450289156000");
                 }
                 return params;

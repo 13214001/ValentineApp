@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="verkstad.org.in.valentineapp.TwoFragment">
+    tools:context="verkstad.org.in.valentineapp.TwoFragment"
+    android:id="@+id/relative_leaderboard">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,17 +16,15 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="match_parent"
+
+    <SearchView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="15dp"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/search"
         android:hint="Search your friends&apos; counts"
-        android:gravity="center"/>
+        android:layout_alignRight="@+id/only_from_gender"
+        android:layout_alignEnd="@+id/only_from_gender" />
+
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -33,7 +32,6 @@
 
         android:id="@+id/filter"
         android:layout_marginTop="68dp"
-        android:layout_below="@+id/editText"
         android:layout_toRightOf="@+id/only_from_gender"
         android:layout_toEndOf="@+id/only_from_gender"
         android:checked="false"
@@ -76,6 +74,8 @@
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+
 
 
 </RelativeLayout>
