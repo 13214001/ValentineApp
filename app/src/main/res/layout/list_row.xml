@@ -5,7 +5,7 @@
     xmlns:facebook="http://schemas.android.com/tools"
 
     android:orientation="horizontal"
-    android:background="@drawable/list_selector"
+    android:background="#fff8f6"
     android:padding="5dip">
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="wrap_content"

@@ -1,7 +1,5 @@
 package verkstad.org.in.valentineapp;
 
-import java.math.BigInteger;
-
 /**
  * Created by coder on 1/16/2016.
  */

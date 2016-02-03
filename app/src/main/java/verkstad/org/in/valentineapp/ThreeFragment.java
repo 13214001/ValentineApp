@@ -2,17 +2,13 @@ package verkstad.org.in.valentineapp;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,7 +19,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.Profile;
@@ -38,8 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.util.logging.LogRecord;
-
 /**
  * Created by coder on 1/15/2016.
  */
@@ -52,6 +45,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
     private static Handler handler;
     private boolean isRunning;
     private List<Shout> Shoutitems;
+    ListView listView;
 
     public ThreeFragment() {
         // Required empty public constructor
@@ -63,7 +57,6 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         super.onCreate(savedInstanceState);
         Shoutitems = new ArrayList<Shout>();
 
-
     }
 
     @Override
@@ -73,7 +66,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         final View view=inflater.inflate(R.layout.fragment_three, container, false);
         Button shout=(Button)view.findViewById(R.id.shout);
         //ListView listView=(ListView)view.findViewById(R.id.list);
-       ListView listView= (ListView)view. findViewById(R.id.list);
+        listView= (ListView)view. findViewById(R.id.list);
 
        /** ArrayAdapter adapter=new ArrayAdapter(ThreeFragment.this.getActivity(), android.support.design.R.layout.support_simple_spinner_dropdown_item,name);
         listView.setAdapter(adapter); **/
@@ -90,8 +83,8 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         //ShoutList();
         adapter=new ShoutListview(ThreeFragment.this.getActivity(),Shoutitems);
         listView.setAdapter(adapter);
-        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-       // listView.setStackFromBottom(false);
+        //listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+       //listView.setStackFromBottom(false);
         handler=new Handler();
         shout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +105,17 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                 shouts.setTime(obj.getTime());
                 final Long time=shouts.getTime();
 
-                Shoutitems.add(0,shouts);
+                Shoutitems.add(0, shouts);
                 adapter.notifyDataSetChanged();
+
+                //listView.setSelection(0);
+               //listView.smoothScrollToPosition(0);
+
                 editText.setText(null);
                 RequestQueue request = Volley.newRequestQueue(ThreeFragment.this.getActivity());
 
 
-                StringRequest stringrequest = new StringRequest(Request.Method.POST,AppConfig.Request_URL, new Response.Listener<String>() {
+                StringRequest stringrequest = new StringRequest(Request.Method.POST, AppConfig.Request_URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
 
@@ -126,9 +123,10 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast toast= Toast.makeText(ThreeFragment.this.getActivity(), "Check Internet Connection ", Toast.LENGTH_LONG);
+                      /**  Toast toast= Toast.makeText(ThreeFragment.this.getActivity(), "Check Internet Connection ", Toast.LENGTH_LONG);
                         toast.getView().setBackgroundColor(Color.RED);
-                        toast.show();
+                        toast.show(); **/
+                        getActivity().setContentView(R.layout.internet_connection);
                     }
                 }) {
                     @Override
@@ -144,6 +142,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                 request.add(stringrequest);
             }
         });
+
         return view;
     }
 
@@ -153,18 +152,25 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         super.onResume();
         isRunning = true;
         ShoutList();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         isRunning = false;
-
+       RequestQueue requestQueue=Volley.newRequestQueue(ThreeFragment.this.getActivity());
+        requestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
     }
 
     public void ShoutList(){
 
-        RequestQueue request=Volley.newRequestQueue(ThreeFragment.this.getActivity());
+        RequestQueue request= Volley.newRequestQueue(ThreeFragment.this.getActivity());
         StringRequest stringRequest=new StringRequest(Request.Method.POST, AppConfig.Request_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -179,13 +185,15 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                             shouts.setMessage(jsonObject.getString("message"));
                             shouts.setName(jsonObject.getString("name"));
                             shouts.setTime(jsonObject.getLong("time"));
-                            Shoutitems.add(0,shouts);
+                            Shoutitems.add(0, shouts);
 
                             if (lastMsgTime == null
                                     || lastMsgTime.compareTo(shouts.getTime())<0)
                                 lastMsgTime = shouts.getTime();
                             adapter.notifyDataSetChanged();
 
+                            //listView.setSelection(0);
+                            //listView.smoothScrollToPosition(0);
                         }
                     }
                     handler.postDelayed(new Runnable() {
@@ -204,9 +212,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast toast= Toast.makeText(ThreeFragment.this.getActivity(), "Check Internet Connection ", Toast.LENGTH_LONG);
-                toast.getView().setBackgroundColor(Color.RED);
-                toast.show();
+
             }
         }){
             @Override

@@ -2,9 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    xmlns:facebook="http://schemas.android.com/tools"
 
     android:orientation="horizontal"
-    android:background="@drawable/list_selector"
+    android:background="#fff8f6"
     android:padding="5dip">
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
@@ -14,11 +15,17 @@
         android:background="@drawable/image_bg"
         android:layout_marginRight="5dip">
 
-        <ImageView
-            android:id="@+id/senders_list_image"
+        <!--  <ImageView
+                android:id="@+id/list_image"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:src="@drawable/rihanna"/> -->
+        <com.facebook.login.widget.ProfilePictureView
+            android:id="@+id/senders_image"
             android:layout_width="30dip"
             android:layout_height="30dip"
-            />
+            android:layout_centerInParent="true"
+            facebook:preset_size="small"/>
 
 
     </LinearLayout>
@@ -33,22 +40,40 @@
         android:textColor="#040404"
         android:typeface="sans"
         android:textSize="10dip"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold"/>
 
     <!-- Message-->
     <TextView
         android:id="@+id/sent_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/sender_name"
         android:textColor="#343434"
         android:textSize="10dip"
-        android:text="Message"
-        android:layout_alignBottom="@+id/thumbnail"
-        android:layout_alignLeft="@+id/sender_name"
-        android:layout_alignStart="@+id/sender_name" />
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Message" />
 
-
+    <!-- Rightend Duration -->
+    <!--  <TextView
+           android:id="@+id/time"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_alignTop="@id/sender_name"
+           android:gravity="right"
+           android:layout_marginRight="5dip"
+           android:textSize="10dip"
+           android:textColor="#10bcc9"
+           android:textStyle="bold"/> -->
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/which_rose_sent"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/sender_name"
+        android:gravity="right"
+        android:layout_marginRight="5dip"/>
 
 
 </RelativeLayout>

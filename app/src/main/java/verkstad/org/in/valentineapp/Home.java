@@ -1,9 +1,12 @@
 package verkstad.org.in.valentineapp;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.os.*;
+import android.os.Process;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,26 +26,21 @@ public class Home extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
-
-
-
-
-
-    String arr1[] = {"anu","abhishek","chetan","akash"};
-    String arr2[] = {"hiiii","hellooo","hahaha","awwww"};
-    int img[] = {R.drawable.splash,R.drawable.splash,R.drawable.splash,R.drawable.splash};
-
-
+    Functions functions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        functions = new Functions();
+        functions.get_current_user(this);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(functions.current_user_name);
+        //getSupportActionBar().setLogo(functions.current_user_id);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -55,7 +54,36 @@ public class Home extends AppCompatActivity {
          listView.setAdapter(adapter); **/
 
     }
+    public void Retry(View view){
+        CheckInternet checkInternet=new CheckInternet(Home.this);
+        checkInternet.execute();
+    }
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Want To Exit Application?");
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                moveTaskToBack(true);
+                                android.os.Process.killProcess(Process.myPid());
+                                System.exit(1);
+                            }
+                        })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
 
+
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -94,4 +122,6 @@ public class Home extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+
 }

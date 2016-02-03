@@ -18,7 +18,7 @@ public class RecyclerViewAdapterlb extends RecyclerView.Adapter<RecyclerViewAdap
     ArrayList<Integer> ranks_leader_board;
     public RecyclerViewAdapterlb(Context context,ArrayList<Integer> ranks_leader_board,ArrayList<String> names_leader_board,
                                  ArrayList<String> counts_red_leader_board,ArrayList<String> counts_yellow_leader_board){
-        inflater=LayoutInflater.from(context);
+        inflater= LayoutInflater.from(context);
         this.ranks_leader_board=ranks_leader_board;
         this.counts_red_leader_board=counts_red_leader_board;
         this.names_leader_board=names_leader_board;

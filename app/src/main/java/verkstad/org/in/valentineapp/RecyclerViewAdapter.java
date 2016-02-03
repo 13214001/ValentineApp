@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.login.widget.ProfilePictureView;
+
 import java.util.ArrayList;
 
 /**
@@ -15,13 +17,14 @@ import java.util.ArrayList;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     LayoutInflater inflater;
-    ArrayList<String> sender_names,sent_messages;
-    ArrayList<Integer> profile_pics;
-    public RecyclerViewAdapter(Context context, ArrayList<String> sender_names, ArrayList<String> sent_messages, ArrayList<Integer> profile_pics){
+    ArrayList<String> sender_names,sent_messages,sender_image;
+    ArrayList<Integer> which_rose_sent;
+    public RecyclerViewAdapter(Context context, ArrayList<String> sender_names, ArrayList<String> sent_messages, ArrayList<String> sender_image, ArrayList<Integer> which_rose_sent){
         inflater=LayoutInflater.from(context);
         this.sender_names=sender_names;
         this.sent_messages=sent_messages;
-        this.profile_pics=profile_pics;
+        this.sender_image=sender_image;
+        this.which_rose_sent=which_rose_sent;
     }
 
 
@@ -36,10 +39,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         String sender_name = sender_names.get(i);
         String sent_message = sent_messages.get(i);
-        int profile_pic_id=profile_pics.get(i);
+        String profile_pic_id=sender_image.get(i);
+        int which_rose = which_rose_sent.get(i);
         viewHolder.sender_name.setText(sender_name);
         viewHolder.sent_message.setText(sent_message);
-        viewHolder.profile_pic.setImageResource(profile_pic_id);
+        viewHolder.senders_image.setProfileId(profile_pic_id);
+        viewHolder.which_rose_sent.setImageResource(which_rose);
 
     }
 
@@ -51,12 +56,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView sender_name;
         TextView sent_message;
-        ImageView  profile_pic;
+        ProfilePictureView senders_image;
+        ImageView which_rose_sent;
         public ViewHolder(View itemView) {
             super(itemView);
             sender_name= (TextView) itemView.findViewById(R.id.sender_name);
             sent_message= (TextView) itemView.findViewById(R.id.sent_message);
-            profile_pic= (ImageView) itemView.findViewById(R.id.senders_list_image);
+            senders_image= (ProfilePictureView) itemView.findViewById(R.id.senders_image);
+            which_rose_sent= (ImageView) itemView.findViewById(R.id.which_rose_sent);
         }
     }
 }
