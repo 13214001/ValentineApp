@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -27,9 +28,9 @@ public class CheckInternet extends AsyncTask<Void,Void,Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-       // functions=new Functions();
-        //return functions.isOnline();
-        return true;
+        functions=new Functions();
+        return functions.isOnline();
+
     }
 
 
@@ -39,7 +40,10 @@ public class CheckInternet extends AsyncTask<Void,Void,Boolean> {
 
       if (result==true){
           progressDialog.cancel();
-          Toast.makeText(show_dialog,"done",Toast.LENGTH_LONG).show();
+          Intent intent=new Intent(show_dialog,Home.class);
+          show_dialog.startActivity(intent);
+
+         // Toast.makeText(show_dialog,"done",Toast.LENGTH_LONG).show();
       }
         else {
           progressDialog.cancel();

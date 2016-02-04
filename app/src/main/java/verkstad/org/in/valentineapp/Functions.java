@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -364,6 +365,23 @@ public class
         searchView.setOnQueryTextListener(listener);
 
 
+    }
+    public boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("ping -c 1 www.google.com");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (IOException e)          { e.printStackTrace();
+        }
+        catch (InterruptedException e) { e.printStackTrace();
+
+        }
+
+        return false;
     }
 
 }
