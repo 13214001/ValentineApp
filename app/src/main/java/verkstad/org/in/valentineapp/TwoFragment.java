@@ -1,9 +1,11 @@
 package verkstad.org.in.valentineapp;
 
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +30,7 @@ import java.util.Arrays;
 /**
  * Created by coder on 1/15/2016.
  */
-public class TwoFragment extends android.support.v4.app.Fragment{
+public class TwoFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener{
     Functions functions;
     RecyclerView recyclerViewlb;
     ArrayList<Integer> ranks_leader_board;
@@ -41,6 +43,8 @@ public class TwoFragment extends android.support.v4.app.Fragment{
     ProgressBar loading;
     TableLayout users_tablelayout,loaders_tablelayout;
     ImageView lbboy,lbgirl;
+    SwipeRefreshLayout swipeLayout;
+
     public TwoFragment() {
         // Required empty public constructor
     }
@@ -72,6 +76,9 @@ public class TwoFragment extends android.support.v4.app.Fragment{
         loading.getIndeterminateDrawable().setColorFilter(Color.RED, PorterDuff.Mode.DST_IN);
         lbboy= (ImageView) view.findViewById(R.id.lbboy);
         lbgirl= (ImageView) view.findViewById(R.id.lbgirl);
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
+
 
         listener = new SearchView.OnQueryTextListener(){
             @Override
@@ -246,6 +253,13 @@ public class TwoFragment extends android.support.v4.app.Fragment{
             }
         });
         super.onPause();
+    }
+
+    @Override
+    public void onRefresh() {
+        //super.onCreate(getArguments());
+        android.support.v4.app.FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
+        fragmentTransaction.detach(this).attach(this).commit();
     }
 }
 /**  filter.setOnClickListener(new View.OnClickListener() {

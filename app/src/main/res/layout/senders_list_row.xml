@@ -54,26 +54,28 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Message" />
 
-    <!-- Rightend Duration -->
-    <!--  <TextView
-           android:id="@+id/time"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignParentRight="true"
-           android:layout_alignTop="@id/sender_name"
-           android:gravity="right"
-           android:layout_marginRight="5dip"
-           android:textSize="10dip"
-           android:textColor="#10bcc9"
-           android:textStyle="bold"/> -->
-    <ImageView
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/which_rose_sent"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/sender_name"
-        android:gravity="right"
-        android:layout_marginRight="5dip"/>
+        >
+        <TableRow android:layout_weight="1">
+            <View android:layout_width="0px" android:layout_weight="15"
+                android:layout_height="fill_parent"
+                ></View>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="30dip"
+                android:id="@+id/which_rose_sent"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/sender_name"
+                android:gravity="right"
+                android:layout_marginRight="5dip"
+                android:layout_weight="1"
+                />
+        </TableRow>
+
+    </TableLayout>
+
 
 
 </RelativeLayout>

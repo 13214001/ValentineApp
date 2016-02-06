@@ -1,54 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#fff8f6"
-    tools:context="verkstad.org.in.valentineapp.ThreeFragment">
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/EditText"
+
+    <TableLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:lines="5"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="10dp"
-        android:gravity="top|left"
-        android:inputType="textMultiLine"
-        android:scrollHorizontally="false"
-        android:hint="Share your feelings..."
-        android:maxLength="400"
-        android:background="@drawable/rounded_edittext"
-        />
-    <Button
-        android:id="@+id/shout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Shout"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_below="@+id/EditText"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:clickable="true"
+        android:layout_height="match_parent"
+        android:background="#fff8f6"
+        tools:context="verkstad.org.in.valentineapp.ThreeFragment">
 
-        />
-    <ListView
-        android:id="@+id/list"
-        android:layout_below="@+id/shout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
+        <TableRow>
+            <EditText
+                android:id="@+id/EditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="80dp"
+                android:lines="5"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="10dp"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
+                android:hint="Share your feelings..."
+                android:maxLength="400"
+                android:background="@drawable/rounded_edittext"
+                />
+        </TableRow>
+        <TableRow>
+            <Button
+                android:id="@+id/shout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Shout"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_below="@+id/EditText"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:clickable="true"
 
-        android:listSelector="@drawable/list_selector" />
+                />
+        </TableRow>
+        <TableRow>
+            <ListView
+                android:id="@+id/list"
+                android:layout_below="@+id/shout"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:divider="#b5b5b5"
+                android:dividerHeight="1dp"
+                android:listSelector="@drawable/list_selector" />
 
-</RelativeLayout>
+        </TableRow>
 
+
+
+
+    </TableLayout>
+
+</android.support.v4.widget.NestedScrollView>

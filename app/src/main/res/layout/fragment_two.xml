@@ -3,6 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_container">
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,6 +29,7 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 style="@android:style/TextAppearance.DeviceDefault.Large"
+                android:layout_marginTop="10dp"
                 />
             <View android:layout_width="0px" android:layout_weight="1"
 
@@ -43,7 +49,8 @@
                 android:layout_weight="1"
                 android:padding="5dp"
                 android:layout_gravity="center"
-                android:background="@drawable/rounded_edittext"/>
+                android:background="@drawable/rounded_edittext"
+                />
         </TableRow>
 
         <TableRow
@@ -63,7 +70,7 @@
                 android:id="@+id/lbboy"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".9"
                 android:src="@drawable/lbboy"
                 android:layout_gravity="center"/>
             <View android:layout_width="0px" android:layout_weight="1"
@@ -73,38 +80,36 @@
         </TableRow>
 
         <TableRow
-            android:layout_weight="0.3">
-            <View android:layout_width="0px" android:layout_weight="1.5"
+            android:layout_weight="0.3"
+            android:layout_marginTop="10dp">
 
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"></View>
             <TextView
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:id="@+id/only_from_gender"
                 style="@android:style/TextAppearance.DeviceDefault"
                 android:textStyle="bold"
                 android:textColor="#981522"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:text="only from girls:"
+                android:gravity="right"/>
             <CheckBox
                 android:layout_width="0px"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7"
+                android:layout_weight="0.55"
                 android:layout_gravity="center"
                 android:id="@+id/filter"
                 android:checked="false"
                 android:clickable="false"
                 android:buttonTint="#b81738"/>
-            <View android:layout_width="0px" android:layout_weight="1"
 
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"></View>
         </TableRow>
 
         <TableRow
             android:layout_weight="0.2"
             android:background="#ececec"
+            android:layout_marginTop="10dp"
             >
             <TextView android:layout_weight="1.5"
                 android:layout_width="0px"
@@ -191,4 +196,5 @@
 
 
     </TableLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.v4.widget.NestedScrollView>

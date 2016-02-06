@@ -2,6 +2,7 @@ package verkstad.org.in.valentineapp;
 
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -35,7 +36,7 @@ import java.util.Arrays;
 /**
  * Created by coder on 1/15/2016.
  */
-public class OneFragment extends android.support.v4.app.Fragment {
+public class OneFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     Functions functions;
     TextView red_from_girls,red_from_boys,yellow_from_girls,yellow_from_boys;
@@ -56,6 +57,7 @@ public class OneFragment extends android.support.v4.app.Fragment {
     ArrayList<Integer> which_rose_sent;
     TableLayout table_onefragment;
     ProgressBar loader_onefragment;
+    SwipeRefreshLayout swipeLayout;
     public OneFragment() {
         // Required empty public constructor
     }
@@ -95,7 +97,8 @@ public class OneFragment extends android.support.v4.app.Fragment {
         friends_list_image=new ArrayList<String>();
         table_onefragment= (TableLayout) view.findViewById(R.id.table_onefragment);
         loader_onefragment= (ProgressBar) view.findViewById(R.id.loader_onefragment);
-
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
 
         functions.get_current_user(OneFragment.this.getActivity());
 
@@ -327,6 +330,12 @@ public class OneFragment extends android.support.v4.app.Fragment {
             }
         });
         super.onPause();
+    }
+
+    @Override
+    public void onRefresh() {
+        android.support.v4.app.FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
+        fragmentTransaction.detach(this).attach(this).commit();
     }
 }
 

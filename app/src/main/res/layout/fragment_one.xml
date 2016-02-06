@@ -3,6 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe_container">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -153,7 +157,6 @@
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:text="Send Flowers"
-                    android:textColor="#b81738"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:textSize="12dp"
                     android:id="@+id/send_flower"
@@ -167,7 +170,6 @@
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:text="Received Flowers"
-                    android:textColor="#b81738"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:textSize="12dp"
                     android:id="@+id/received_flowers"
@@ -325,8 +327,6 @@
                         android:gravity="center"
                         android:text="Send"
                         style="@style/Widget.AppCompat.Button.Colored"
-
-                        android:textColor="#b81738"
                         android:id="@+id/send"
                         android:onClick="send_rose"/>
                     <View android:layout_width="0px"
@@ -341,7 +341,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="50"
+                android:layout_weight="135"
                 android:visibility="gone"
                 android:id="@+id/received_table_layout">
                 <TableRow
@@ -359,6 +359,6 @@
 
         </TableLayout>
     </RelativeLayout>
-
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.v4.widget.NestedScrollView>

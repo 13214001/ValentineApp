@@ -40,7 +40,7 @@ public class CheckInternet extends AsyncTask<Void,Void,Boolean> {
 
       if (result==true){
           progressDialog.cancel();
-          Intent intent=new Intent(show_dialog,Home.class);
+         Intent intent=new Intent(show_dialog,Home.class);
           show_dialog.startActivity(intent);
 
 
