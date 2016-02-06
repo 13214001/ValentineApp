@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -44,7 +46,7 @@ public class TwoFragment extends android.support.v4.app.Fragment implements Swip
     TableLayout users_tablelayout,loaders_tablelayout;
     ImageView lbboy,lbgirl;
     SwipeRefreshLayout swipeLayout;
-
+    NestedScrollView scroll_leaders;
     public TwoFragment() {
         // Required empty public constructor
     }
@@ -77,8 +79,24 @@ public class TwoFragment extends android.support.v4.app.Fragment implements Swip
         lbboy= (ImageView) view.findViewById(R.id.lbboy);
         lbgirl= (ImageView) view.findViewById(R.id.lbgirl);
         swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        scroll_leaders= (NestedScrollView) view.findViewById(R.id.scroll_leaders);
         swipeLayout.setOnRefreshListener(this);
+        scroll_leaders.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollY = scroll_leaders.getScrollY();
+                if (scrollY == 0) {
 
+                    swipeLayout.setEnabled(true);
+
+                    //Toast.makeText(OneFragment.this.getActivity(),"enabled",Toast.LENGTH_SHORT).show();
+                } else {
+                    swipeLayout.setEnabled(false);
+
+                    //Toast.makeText(OneFragment.this.getActivity(),"notenabled",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         listener = new SearchView.OnQueryTextListener(){
             @Override

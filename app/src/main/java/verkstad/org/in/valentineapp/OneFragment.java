@@ -2,6 +2,7 @@ package verkstad.org.in.valentineapp;
 
 
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -37,7 +39,7 @@ import java.util.Arrays;
  * Created by coder on 1/15/2016.
  */
 public class OneFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
-
+    NestedScrollView scroll_home;
     Functions functions;
     TextView red_from_girls,red_from_boys,yellow_from_girls,yellow_from_boys;
     EditText editText2;
@@ -65,12 +67,16 @@ public class OneFragment extends android.support.v4.app.Fragment implements Swip
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view=inflater.inflate(R.layout.fragment_one, container, false);
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
+        scroll_home= (NestedScrollView) view.findViewById(R.id.scroll_home);
 
         functions = new Functions();
         radioGroup = (RadioGroup)view.findViewById(R.id.radio);
@@ -97,8 +103,23 @@ public class OneFragment extends android.support.v4.app.Fragment implements Swip
         friends_list_image=new ArrayList<String>();
         table_onefragment= (TableLayout) view.findViewById(R.id.table_onefragment);
         loader_onefragment= (ProgressBar) view.findViewById(R.id.loader_onefragment);
-        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(this);
+        scroll_home.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+
+                int scrollY = scroll_home.getScrollY();
+                if (scrollY ==0) {
+
+                    swipeLayout.setEnabled(true);
+
+                    Toast.makeText(OneFragment.this.getActivity(),"enabled",Toast.LENGTH_SHORT).show();
+                } else {
+                    swipeLayout.setEnabled(false);
+
+                    Toast.makeText(OneFragment.this.getActivity(),"notenabled",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         functions.get_current_user(OneFragment.this.getActivity());
 
@@ -334,8 +355,15 @@ public class OneFragment extends android.support.v4.app.Fragment implements Swip
 
     @Override
     public void onRefresh() {
+       // scroll_home.setEnabled(false);
+        //swipeLayout.setVisibility(View.VISIBLE);
+
+        swipeLayout.setRefreshing(true);
+
+        Toast.makeText(OneFragment.this.getActivity(),"Refresh",Toast.LENGTH_SHORT).show();
         android.support.v4.app.FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
         fragmentTransaction.detach(this).attach(this).commit();
+        //scroll_home.setEnabled(true);
     }
 }
 
