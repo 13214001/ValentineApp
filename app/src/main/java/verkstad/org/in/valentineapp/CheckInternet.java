@@ -43,6 +43,7 @@ public class CheckInternet extends AsyncTask<Void,Void,Boolean> {
           Intent intent=new Intent(show_dialog,Home.class);
           show_dialog.startActivity(intent);
 
+
          // Toast.makeText(show_dialog,"done",Toast.LENGTH_LONG).show();
       }
         else {

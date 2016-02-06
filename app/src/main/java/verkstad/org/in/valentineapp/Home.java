@@ -1,24 +1,18 @@
 package verkstad.org.in.valentineapp;
 
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.*;
+import android.os.Bundle;
 import android.os.Process;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -27,22 +21,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
-
-import android.net.Uri;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +67,7 @@ public class Home extends AppCompatActivity {
         View v = inflator.inflate(R.layout.custom_actionbar, null);
         pictureView=(ProfilePictureView)v.findViewById(R.id.profile_home_image);
         profile_name=(TextView)v.findViewById(R.id.profile_home_name);
-        pictureView.setProfileId("1683072511916372");
+        pictureView.setProfileId(functions.current_user_id);
         pictureView.setPresetSize(ProfilePictureView.CUSTOM);
         pictureView.buildDrawingCache();
         Bitmap bitmap = pictureView.getDrawingCache();
@@ -105,7 +95,7 @@ public class Home extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Want To Exit Application?");
+        alertDialogBuilder.setTitle("Exit Application?");
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Yes",
@@ -127,6 +117,24 @@ public class Home extends AppCompatActivity {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onPause() {
+
+        RequestQueue requestQueue= Volley.newRequestQueue(Home.this);
+        requestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+        super.onPause();
     }
 
     private void setupViewPager(ViewPager viewPager) {

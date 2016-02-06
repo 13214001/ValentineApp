@@ -23,7 +23,7 @@
                 android:layout_weight="3"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textSize="30px"
+                style="@android:style/TextAppearance.DeviceDefault.Large"
                 />
             <View android:layout_width="0px" android:layout_weight="1"
 
@@ -83,7 +83,7 @@
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:id="@+id/only_from_gender"
-                android:textSize="20px"
+                style="@android:style/TextAppearance.DeviceDefault"
                 android:textStyle="bold"
                 android:textColor="#981522"
                 android:layout_gravity="center" />
@@ -94,7 +94,8 @@
                 android:layout_gravity="center"
                 android:id="@+id/filter"
                 android:checked="false"
-                android:clickable="false"/>
+                android:clickable="false"
+                android:buttonTint="#b81738"/>
             <View android:layout_width="0px" android:layout_weight="1"
 
                 android:layout_height="fill_parent"
@@ -172,10 +173,11 @@
                 <ProgressBar
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="?android:attr/progressBarStyleSmall"
+                    style="?android:attr/progressBarStyle"
                     android:id="@+id/lb_users_progressbar"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:visibility="visible"
 
                     />
                 <View android:layout_width="0dp"

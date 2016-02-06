@@ -17,7 +17,7 @@
             android:id="@+id/profile_home_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:foreground="@drawable/circle"
+            android:foreground="@drawable/rectangle"
             android:adjustViewBounds="true"
 
             />

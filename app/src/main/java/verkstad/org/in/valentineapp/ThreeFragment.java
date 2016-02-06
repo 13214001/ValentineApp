@@ -46,6 +46,8 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
     private boolean isRunning;
     private List<Shout> Shoutitems;
     ListView listView;
+   Button threefragment;
+    LayoutInflater inflator;
 
     public ThreeFragment() {
         // Required empty public constructor
@@ -126,7 +128,12 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                       /**  Toast toast= Toast.makeText(ThreeFragment.this.getActivity(), "Check Internet Connection ", Toast.LENGTH_LONG);
                         toast.getView().setBackgroundColor(Color.RED);
                         toast.show(); **/
+                       /** inflator = (LayoutInflater)ThreeFragment.this.getActivity() .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View v= inflator.inflate(R.layout.internet_connection, null);
+                        threefragment=(Button)v.findViewById(R.id.retry);
+                        threefragment.setTag("threefragment"); **/
                         getActivity().setContentView(R.layout.internet_connection);
+
                     }
                 }) {
                     @Override
@@ -157,7 +164,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
 
     @Override
     public void onPause() {
-        super.onPause();
+
         isRunning = false;
        RequestQueue requestQueue=Volley.newRequestQueue(ThreeFragment.this.getActivity());
         requestQueue.cancelAll(new RequestQueue.RequestFilter() {
@@ -166,6 +173,7 @@ public class ThreeFragment extends android.support.v4.app.Fragment  {
                 return true;
             }
         });
+        super.onPause();
     }
 
     public void ShoutList(){

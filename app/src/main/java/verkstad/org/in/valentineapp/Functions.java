@@ -4,6 +4,7 @@ package verkstad.org.in.valentineapp;
  * Created by coder on 1/17/2016.
  */
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ import java.util.Map;
 public class
         Functions {
     Context context;
+    Activity activity;
     public interface VolleyCallback{
         void onSuccess(int size);
     }
@@ -86,9 +88,8 @@ public class
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
-                Toast.makeText(context,volleyError.toString(),Toast.LENGTH_LONG).show();
-
+                activity = (Activity) context;
+                activity.setContentView(R.layout.internet_connection);
             }
         }){
             @Override
@@ -150,7 +151,8 @@ public class
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                activity = (Activity) context;
+                activity.setContentView(R.layout.internet_connection);
             }
         }){
             @Override
@@ -217,6 +219,8 @@ public class
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                activity= (Activity) context;
+                activity.setContentView(R.layout.internet_connection);
 
             }
         }){
@@ -274,6 +278,8 @@ public class
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                activity = (Activity) context;
+                activity.setContentView(R.layout.internet_connection);
 
             }
         }){
@@ -366,6 +372,7 @@ public class
 
 
     }
+
     public boolean isOnline() {
 
         Runtime runtime = Runtime.getRuntime();
@@ -383,5 +390,6 @@ public class
 
         return false;
     }
+
 
 }
